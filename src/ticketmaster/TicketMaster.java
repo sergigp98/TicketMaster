@@ -5,12 +5,15 @@
  */
 package ticketmaster;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -34,8 +37,7 @@ public class TicketMaster {
 
         //ARTISTAS
         File fichero = new File("src/documentos/artistas.txt");
-        FileOutputStream output = new FileOutputStream(fichero);
-        DataOutputStream dataOS = new DataOutputStream(output);
+        FileWriter dataOS = new FileWriter(fichero);
 
         String nombres[] = {"Ana", "Luis", "Alicia", "Pedro", "Sergio", "Daniel", "Roman", "Mario", "Javier", "Antonio", "Juan", "Alejandro", "Alfredo", "Arturo", "Felipe", "Manuel", "DADDY", "BAD", "Karol", "Ferran"};
 
@@ -45,17 +47,35 @@ public class TicketMaster {
         for (int i = 0; i < apellidos.length; i++) {
             numero++;
             System.out.print("ID: " + numero + "\n" + "NOMBRE: " + nombres[i]);
-            dataOS.writeInt(numero);
-            dataOS.writeUTF(nombres[i]);
+            dataOS.write(numero);
+            dataOS.write(nombres[i]);
             System.out.println(" APELLIDO: " + apellidos[i] + "\n");
-            dataOS.writeUTF(apellidos[i]);
+            dataOS.write(apellidos[i]);
 
         }
 
         dataOS.close();
 
         
-        //Con el inputStream solo me saca el primer valor del array
+        //
+        try{
+        BufferedReader dataIS = new BufferedReader(new FileReader(fichero));
+        String linea;
+        while((linea=dataIS.readLine())!=null){
+            System.out.println(linea);
+            
+        }
+        dataIS.close();
+        }catch(FileNotFoundException ex){
+            System.out.println("No se encuentra el fichero");
+        }catch(IOException ex){
+            ex.printStackTrace();
+            System.out.println("Error E/S");
+        }
+        
+        
+        /*
+        Con el inputStream solo me saca el primer valor del array
         FileInputStream input = new FileInputStream(fichero);
         DataInputStream dataIS = new DataInputStream(input);
 
@@ -83,7 +103,7 @@ public class TicketMaster {
         } catch (EOFException ec) {
         }
 
-        dataIS.close();
+        dataIS.close();*/
         
         
 
